@@ -9,17 +9,27 @@ import {
 import Filemenu from '../components/dialogs/Filemenu';
 import { sampleMessages } from '../constants/sampleData';
 import MessageComponent from '../components/shared/MessageComponent';
+import { getSocket } from '../socket';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-const user = {
-  _id: "78965",
-  name: "Nikkkkkkkiiiii"  
-}
+const Chat = ({ chatId, user }) => {
+  const socket = getSocket()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-const Chat = () => {
-  const [message, setMessage] = useState("");
   const containerRef = useRef(null);
+  const bottomRef = useRef(null);
+
+
+  const [message, setMessage] = useState("");
+  const [messages, useMessages] = useState("");
+  const [page, setPage] = useState([]);
+  const [fileMenuAnchor, setFileMenuAnchor] = useState(null);
 
   const handleSubmit = (e) => {
+
+
     e.preventDefault();
     if (message.trim()) {
       // Handle sending message logic here, e.g., updating state or API call
@@ -43,7 +53,7 @@ const Chat = () => {
         }}
       >
         {sampleMessages.map((i) => (
-          <MessageComponent 
+          <MessageComponent
             key={i._id}
             message={i}
             user={user}

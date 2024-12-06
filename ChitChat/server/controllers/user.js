@@ -61,7 +61,7 @@ const newUser = tryCatch(async (req, res, next) => {
 
 
 // Login user
-const login = tryCatch(async (req, res,next) => {
+const login = tryCatch(async (req, res, next) => {
     const { username, password } = req.body;
 
     // Fetch user and select password field explicitly
@@ -82,7 +82,7 @@ const login = tryCatch(async (req, res,next) => {
 });
 
 // Get user profile
-const getMyProfile = tryCatch(async (req, res,next) => {
+const getMyProfile = tryCatch(async (req, res, next) => {
     const user = await User.findById(req.user).select("-password");
 
     if (!user) {
@@ -95,8 +95,8 @@ const getMyProfile = tryCatch(async (req, res,next) => {
     });
 });
 
-const logout = tryCatch(async (req, res,next) => {
-    
+const logout = tryCatch(async (req, res, next) => {
+
     res.status(200).cookie("chitChat-Token", "", {
         ...cookieOption, maxAge: 0
     }).json({
@@ -106,7 +106,7 @@ const logout = tryCatch(async (req, res,next) => {
 });
 
 
-const searchUser = tryCatch(async (req, res,next) => {
+const searchUser = tryCatch(async (req, res, next) => {
     const { name = "" } = req.query;
 
     // Fetch all direct (non-group) chats the user is a part of
@@ -211,7 +211,7 @@ const acceptFriendRequest = tryCatch(async (req, res, next) => {
 });
 
 
-const getNotifications = tryCatch(async (req, res,next) => {
+const getNotifications = tryCatch(async (req, res, next) => {
     const requests = await Request.find({ receiver: req.user })
         .populate("sender", "name avatar");
 
@@ -220,7 +220,7 @@ const getNotifications = tryCatch(async (req, res,next) => {
         sender: {
             _id: sender._id,
             name: sender.name,
-            avatar: sender.avatar?.url || null 
+            avatar: sender.avatar?.url || null
         }
     }));
 
@@ -274,7 +274,11 @@ const getMyAllFriends = tryCatch(async (req, res, next) => {
 
 
 export {
-    acceptFriendRequest, getMyAllFriends, getMyProfile, getNotifications, login,
+    acceptFriendRequest,
+    getMyAllFriends,
+    getMyProfile,
+    getNotifications,
+    login,
     logout,
     newUser,
     searchUser,

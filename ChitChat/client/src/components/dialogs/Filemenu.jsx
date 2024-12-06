@@ -1,28 +1,25 @@
 import { Menu, MenuItem } from '@mui/material';
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+
 
 const Filemenu = ({ anchorEl, onClose }) => {
-  const [open, setOpen] = useState(false);
+  const { isFilemenu } = useSelector((state) => state.misc);
+  const dispatch = useDispatch()
 
-  // Open the menu when anchorEl is provided
-  React.useEffect(() => {
-    if (anchorEl) {
-      setOpen(true);
-    } else {
-      setOpen(false);
-    }
-  }, [anchorEl]);
+  const [open, setOpen] = useState(false);
+  // const closeFileMenu = () => dispatch(setIsFileMenu(false));
 
   return (
-    <Menu
-      anchorEl={anchorEl}
-      open={open}
-      onClose={onClose}
-      // Optional: onClick to close the menu
+    <Menu anchorEl={anchorEl} open={open} onClose={onClose}
     >
-      <MenuItem onClick={onClose}>Option 1</MenuItem>
-      <MenuItem onClick={onClose}>Option 2</MenuItem>
-      <MenuItem onClick={onClose}>Option 3</MenuItem>
+      <div>
+        <MenuItem onClick={onClose}>Option 1</MenuItem>
+        <MenuItem onClick={onClose}>Option 2</MenuItem>
+        <MenuItem onClick={onClose}>Option 3</MenuItem>
+      </div>
+
     </Menu>
   );
 }

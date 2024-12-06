@@ -15,7 +15,6 @@ const Groups = lazy(() => import("./pages/Groups"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 
-
 const App = () => {
   const { user, loader } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -24,7 +23,9 @@ const App = () => {
       .get(`${server}/api/v1/user/me`, { withCredentials: true })
       .then(({ data }) => dispatch(userExists(data.user)))
       .catch((err) => dispatch(userNotExists()));
+      
   }, [dispatch]);
+
 
   return loader ? (
     <LayoutLoader />
@@ -34,7 +35,7 @@ const App = () => {
         <Routes>
           <Route
             element={
-                <ProtectRoute user={user} />
+              <ProtectRoute user={user} />
             }
           >
             <Route path="/" element={<Home />} />

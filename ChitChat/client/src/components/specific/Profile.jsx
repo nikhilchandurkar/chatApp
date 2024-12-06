@@ -4,26 +4,26 @@ import {
     AlternateEmail as UsernameIcon,
 } from "@mui/icons-material";
 import { Avatar, Stack, Typography } from '@mui/material';
+import axios from "axios";
 import moment from "moment";
 import React, { useEffect } from 'react';
-import { transformImage } from "../../lib/feature";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { server } from "../../constants/config";
-
+import { transformImage } from "../../lib/feature";
 
 
 const Profile = () => {
-const {user} = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    axios
-      .get(`${server}/api/v1/user/me`, { withCredentials: true })
-  }, [dispatch])
+    const { user } = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        axios
+            .get(`${server}/api/v1/user/me`, { withCredentials: true })
+    }, [dispatch])
 
-    
+
     return (
         <Stack spacing={"2rem"} direction={"column"} alignItems={"center"}>
+
             <Avatar
                 src={transformImage(user?.avatar?.url)}
                 alt="User Profile Picture"

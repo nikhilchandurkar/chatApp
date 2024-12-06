@@ -42,18 +42,19 @@ const sendToken = (res, user, code, message) => {
 
 }
 
- // Ensure this is installed via npm
+// Ensure this is installed via npm
 
- const uploadFilesToCloudinary = async (files = []) => {
+const uploadFilesToCloudinary = async (files = []) => {
     if (!files || files.length === 0) {
         throw new Error("No files provided for upload.");
     }
 
     try {
-        const uploads = files.map((file) => 
+        const uploads = files.map((file) =>
             cloudinary.uploader.upload(getBase64(file), {
                 resource_type: "auto",
-                public_id: uuid(), // Generate unique ID for each file
+                // Generate unique ID for each file
+                public_id: uuid(),
             })
         );
 

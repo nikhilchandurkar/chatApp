@@ -4,25 +4,33 @@ import { useParams } from 'react-router-dom';
 import sampleChats from '../../constants/sampleData';
 import ChatList from '../specific/ChatList';
 import Profile from '../specific/Profile';
-import Header from './Header';
+import Header from './Header';  
+import { useMyChatsQuery}  from '../../redux/api/api';
 
 
 const AppLayout = () => (WrappedComponent) => {
 
   return (props) => {
     // const params = useParams
-    // const chatId = params.chatId;
-    const { chatId } = useParams();  
+    // const chat  Id = params.chatId;
+    const { chatId } = useParams(); 
+    
+    
+    // const data = useMyChatsQuery("")
+    // const {data, isLoading,isError,error,refetch} = useMyChatQuery();
+    
+
     const handleDeleteChats = (e, _id, groupChat) => {
       e.preventDefault();
       console.log("deleteChat", _id, groupChat);
     }
 
-
     return (
       <>
         <Header />
         {/* app layout */}
+        
+        
 
         <Grid container height={"calc(100vh - 4rem)"}>
           <Grid item height={"100%"}

@@ -26,19 +26,11 @@ const port = process.env.PORT || 3000;
 connectDB(MONGO_URI);
 
 cloudinary.config({ 
-    // cloud_name: 'dk5sjfsox', 
-    // api_key: '226311655375799', 
-    // api_secret: 'Q2P8zg3cUVIaHOML1fgH7hYq018' 
     cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
     api_key:process.env.CLOUDINARY_API_KEY,
     api_secret:process.env.CLOUDINARY_API_SECRET,
 
 });
-
-console.log(
-    //  process.env.CLOUDINARY_CLOUD_NAME,
-    process.env.CLOUDINARY_API_KEY,
-    process.env.CLOUDINARY_API_SECRET,)
 
 
 const userSocketIDs = new Map();
@@ -57,7 +49,6 @@ app.use(cors({
     ],
     credentials: true,
 }));
-
 
 
 app.use("/api/v1/user", userRoute);
