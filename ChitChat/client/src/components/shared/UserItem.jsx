@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import { Add as AddIcon, Remove as RemoveIcon } from "@mui/icons-material";
 import PropTypes from 'prop-types'; // For prop validation
+import { transformImage } from '../../lib/feature';
 
 const UserItem = ({ user, handler, handlerIsLoading }) => {
     const { name, _id, avatar, isAdded } = user;
@@ -15,11 +16,11 @@ const UserItem = ({ user, handler, handlerIsLoading }) => {
     return (
         <ListItem>
             <Stack direction={"row"} alignItems={"center"} spacing={"1rem"} width={"100%"}>
-                <Avatar src={avatar} alt={name} /> {/* Display the user's avatar */}
+                <Avatar src={transformImage(avatar)} alt={name} /> 
                 <Typography
-                    variant='body1'  // Corrected Typography variant
+                    variant='body1' 
                     sx={{
-                        flexGrow: 1, // Fixed the typo `flexGlow` to `flexGrow`
+                        flexGrow: 1, 
                         display: "-webkit-box",
                         WebkitLineClamp: 1,
                         overflow: "hidden",
@@ -54,7 +55,7 @@ UserItem.propTypes = {
     user: PropTypes.shape({
         name: PropTypes.string.isRequired,
         _id: PropTypes.string.isRequired,
-        avatar: PropTypes.string,  // Optional, should be a URL to the avatar image
+        avatar: PropTypes.string,  
         isAdded: PropTypes.bool.isRequired
     }).isRequired,
     handler: PropTypes.func.isRequired,

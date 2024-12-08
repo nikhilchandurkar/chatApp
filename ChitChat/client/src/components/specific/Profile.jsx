@@ -45,7 +45,7 @@ const Profile = () => {
 
             <ProfileCard
                 heading={"Name"}
-                text={user.name}
+                text={user?.name}
                 Icon={FaceIcon}
             />
 

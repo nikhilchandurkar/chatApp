@@ -1,36 +1,63 @@
-import { Grid } from '@mui/material';
+import { Drawer, Grid, Skeleton } from '@mui/material';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import sampleChats from '../../constants/sampleData';
+import { useErrors } from '../../hooks/hook';
+import { useMyChatsQuery } from '../../redux/api/api';
+import { setIsMobile } from '../../redux/reducers/misc';
 import ChatList from '../specific/ChatList';
 import Profile from '../specific/Profile';
-import Header from './Header';  
-import { useMyChatsQuery}  from '../../redux/api/api';
+import Header from './Header';
+
+
 
 
 const AppLayout = () => (WrappedComponent) => {
 
   return (props) => {
-    // const params = useParams
-    // const chat  Id = params.chatId;
-    const { chatId } = useParams(); 
+
+    const dispatch = useDispatch();
+    const { chatId } = useParams();
+    const { data, isLoading, isError, refetch, error } = useMyChatsQuery("")
     
+
+    const { isMobile } = useSelector((state) => state.misc);
     
-    // const data = useMyChatsQuery("")
-    // const {data, isLoading,isError,error,refetch} = useMyChatQuery();
-    
+
+    useErrors([{ isError,error }]);
+
 
     const handleDeleteChats = (e, _id, groupChat) => {
       e.preventDefault();
       console.log("deleteChat", _id, groupChat);
     }
 
+    const handleMobileClose = () => dispatch(setIsMobile(false))
+
+
     return (
       <>
         <Header />
-        {/* app layout */}
-        
-        
+
+        {
+          isLoading ? (<Skeleton />) : (
+            <Drawer
+              open={isMobile}
+              onClose={handleMobileClose}
+
+            >
+              <ChatList
+                w="70vw"
+                handleDeleteChat={handleDeleteChats}
+                chats={data?.chats || sampleChats}
+                chatId={chatId}
+                onlineUsers={["0", "1", "2", "3"]}
+              />
+            </Drawer>
+          )
+
+        }
 
         <Grid container height={"calc(100vh - 4rem)"}>
           <Grid item height={"100%"}
@@ -42,12 +69,17 @@ const AppLayout = () => (WrappedComponent) => {
             }}
             aria-label="Chat List"
           >
-            <ChatList
-              handleDeleteChat={handleDeleteChats}
-              chats={sampleChats}
-              chatId={chatId}
-              onlineUsers={["0", "1", "2", "3"]}
-            />
+
+            {
+              isLoading ? (<Skeleton />) : (
+                <ChatList
+                  handleDeleteChat={handleDeleteChats}
+                  chats={data?.chats || sampleChats}
+                  chatId={chatId}
+                  onlineUsers={["0", "1", "2", "3"]}
+                />
+              )
+            }
           </Grid>
           <Grid item
             xs={12}
@@ -69,7 +101,7 @@ const AppLayout = () => (WrappedComponent) => {
               bgcolor: "rgba(0,0,0,1)",
             }}
           >
-            <Profile />
+            <Profile  />
           </Grid>
         </Grid>
       </>

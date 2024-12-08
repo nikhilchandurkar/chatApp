@@ -227,7 +227,7 @@ const getNotifications = tryCatch(async (req, res, next) => {
     res.status(200).json({
         success: true,
         message: "Notifications fetched successfully",
-        requests: allRequests
+        allRequests
     });
 });
 

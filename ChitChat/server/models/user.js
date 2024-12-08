@@ -6,6 +6,9 @@ const schema = new Schema({
       type: String,
       required: true,
    },
+   bio: {
+      type: String,
+   },
    username: {
       type: String,
       unique: true,

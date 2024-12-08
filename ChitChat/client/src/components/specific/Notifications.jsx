@@ -1,28 +1,64 @@
-import { Avatar, Button, Dialog, DialogTitle, ListItem, Stack, Typography } from '@mui/material';
-import React, { memo } from 'react';
-import { sampleNotifcations } from '../../constants/sampleData';
+import { Avatar, Button, Dialog, DialogTitle, ListItem, Skeleton, Stack, Typography } from "@mui/material";
+import { memo, useEffect } from "react";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { useErrors } from "../../hooks/hook";
+import { useAcceptFriendRequestMutation, useGetNotificationsQuery } from "../../redux/api/api";
+import { setIsNotification } from "../../redux/reducers/misc";
 
 const Notifications = () => {
-  const friendRequestHandler = ({ _id, accept }) => {
-    // handle friend request
-    console.log(_id, accept);
+  const { isNotification } = useSelector((state) => state.misc);
+  const dispatch = useDispatch();
+
+  const { isLoading, data, error, isError } = useGetNotificationsQuery();
+  const [acceptRequest] = useAcceptFriendRequestMutation();
+  const friendRequestHandler = async ({ _id, accept }) => {
+    dispatch(setIsNotification(false));
+    try {
+      const res = await acceptRequest({ requestId: _id, accept }); 
+      console.log("API Response:", res); 
+  
+      if (res.data?.success) {
+        toast.success(res.data?.message || "Request processed successfully!"); 
+      } else {
+        toast.error(res.data?.message || "Failed to process the request."); 
+      }
+    } catch (error) {
+      console.error("Error in friendRequestHandler:", error); 
+      toast.error(error.message || "An error occurred while handling the request."); 
+    }
   };
+   
+  const closeHandler = () => dispatch(setIsNotification(true));
+
+  useErrors([{ error, isError }]);
+
 
   return (
-    <Dialog open>
-      <Stack p={{ xs: "1rem", sm: "2rem" }} width={"25rem"}>
-        <DialogTitle align='center'>Notifications</DialogTitle>
-        {sampleNotifcations.length > 0 ? (
-          sampleNotifcations.map((notification) => (
-            <NotificationItem
-              notification={notification}
-              sender={notification.sender}
-              handler={friendRequestHandler}
-              key={notification._id}
-            />
-          ))
+    <Dialog open={isNotification} onClose={closeHandler}>
+      <Stack p={{ xs: "1rem", sm: "2rem" }} maxWidth={"25rem"}>
+        <DialogTitle alignSelf={"center"}>Notifications</DialogTitle>
+
+        {isLoading ? (
+          <Skeleton variant="rectangular" width="100%" height={100} />
         ) : (
-          <Typography textAlign={"center"}>0 Notifications</Typography>
+          <>
+            {data?.requests?.length > 0 ? (
+              data?.requests?.map(({ sender, _id }) => (
+                <NotificationItem
+                  sender={sender}
+                  _id={_id}
+                  // name={sender.name}
+                  handler={friendRequestHandler}
+                  key={_id}
+                />
+              ))
+            ) : (
+              <Typography textAlign={"center"} variant="body2" color="textSecondary">
+                No notifications
+              </Typography>
+            )}
+          </>
         )}
       </Stack>
     </Dialog>
@@ -31,36 +67,55 @@ const Notifications = () => {
 
 const NotificationItem = memo(({ sender, _id, handler }) => {
   const { name, avatar } = sender;
-
   return (
-    <ListItem>
-      <Stack direction={"row"} alignItems={"center"} spacing={"1rem"} width={"100%"}>
-        <Avatar src={avatar} alt={`${name}'s avatar`} />
+    <ListItem divider>
+      <Stack
+        direction={"row"}
+        alignItems={"center"}
+        spacing={"1rem"}
+        width={"100%"}
+      >
+        <Avatar
+          src={avatar}
+          alt={`${name}'s avatar`}
+          sx={{ width: 48, height: 48 }}
+        />
+
         <Typography
-          variant='body1'
+          variant="body1"
           sx={{
             flexGrow: 1,
             display: "-webkit-box",
             WebkitLineClamp: 1,
+            WebkitBoxOrient: "vertical",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
+            width: "100%",
           }}
         >
-          {`${name} sent you a friend request`}
+          {`${name} sent you a friend request.`}
         </Typography>
-        <Stack direction={{ xs: "column", sm: "row" }} spacing={"1px"}>
+
+        <Stack
+          direction={{
+            xs: "column",
+            sm: "row",
+          }}
+          spacing={1}
+        >
           <Button
-            onClick={() => handler({ _id, accept: true })}
-            variant='text'
-            color='primary'
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handler({ _id, accept:true })}
           >
             Accept
           </Button>
           <Button
-            color='error'
-            variant='text'
-            onClick={() => handler({ _id, accept: false })}
+            variant="outlined"
+            color="error"
+            size="small"
+            onClick={() => handler({ _id, accept:false })}
           >
             Reject
           </Button>

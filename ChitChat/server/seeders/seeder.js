@@ -4,7 +4,7 @@ import { Message } from "../models/message.js";
 import { User } from "../models/user.js";
 
 
-const createUser = async (numUsers) => {
+const createFakeUser = async (numUsers) => {
     try {
         const userPromise = []
         for (let i = 0; i < numUsers; i++) {
@@ -108,7 +108,7 @@ const createFakeMessages = async (count) => {
   };
 
 
-export {  createFakeMessages, createSingleChats, createUser,fakeGroupChats };
+export {  createFakeMessages, createSingleChats,createFakeUser ,fakeGroupChats };
 
 
 
