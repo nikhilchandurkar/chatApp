@@ -12,27 +12,28 @@ const Notifications = () => {
 
   const { isLoading, data, error, isError } = useGetNotificationsQuery();
   const [acceptRequest] = useAcceptFriendRequestMutation();
+
+  const closeHandler = () => dispatch(setIsNotification(true));
+
   const friendRequestHandler = async ({ _id, accept }) => {
     dispatch(setIsNotification(false));
     try {
-      const res = await acceptRequest({ requestId: _id, accept }); 
-      console.log("API Response:", res); 
-  
+      const res = await acceptRequest({ requestId: _id, accept });
+      console.log("API Response:", res);
+
       if (res.data?.success) {
-        toast.success(res.data?.message || "Request processed successfully!"); 
+        toast.success(res.data?.message || "Request processed successfully!");
       } else {
-        toast.error(res.data?.message || "Failed to process the request."); 
+        toast.error(res.data?.message || "Failed to process the request.");
       }
     } catch (error) {
-      console.error("Error in friendRequestHandler:", error); 
-      toast.error(error.message || "An error occurred while handling the request."); 
+      console.error("Error in friendRequestHandler:", error);
+      toast.error(error.message || "An error occurred while handling the request.");
     }
   };
-   
-  const closeHandler = () => dispatch(setIsNotification(true));
+
 
   useErrors([{ error, isError }]);
-
 
   return (
     <Dialog open={isNotification} onClose={closeHandler}>
@@ -43,8 +44,8 @@ const Notifications = () => {
           <Skeleton variant="rectangular" width="100%" height={100} />
         ) : (
           <>
-            {data?.requests?.length > 0 ? (
-              data?.requests?.map(({ sender, _id }) => (
+            {data?.allRequests?.length > 0 ? (
+              data?.allRequests?.map(({ sender, _id }) => (
                 <NotificationItem
                   sender={sender}
                   _id={_id}
@@ -55,7 +56,7 @@ const Notifications = () => {
               ))
             ) : (
               <Typography textAlign={"center"} variant="body2" color="textSecondary">
-                No notifications
+                0 notifications
               </Typography>
             )}
           </>
@@ -107,7 +108,7 @@ const NotificationItem = memo(({ sender, _id, handler }) => {
             variant="contained"
             color="primary"
             size="small"
-            onClick={() => handler({ _id, accept:true })}
+            onClick={() => handler({ _id, accept: true })}
           >
             Accept
           </Button>
@@ -115,7 +116,7 @@ const NotificationItem = memo(({ sender, _id, handler }) => {
             variant="outlined"
             color="error"
             size="small"
-            onClick={() => handler({ _id, accept:false })}
+            onClick={() => handler({ _id, accept: false })}
           >
             Reject
           </Button>
