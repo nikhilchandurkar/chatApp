@@ -1,5 +1,5 @@
 import { Avatar, Button, Dialog, DialogTitle, ListItem, Skeleton, Stack, Typography } from "@mui/material";
-import { memo, useEffect } from "react";
+import { memo } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useErrors } from "../../hooks/hook";
