@@ -12,27 +12,24 @@ const Notifications = () => {
 
   const { isLoading, data, error, isError } = useGetNotificationsQuery();
   const [acceptRequest] = useAcceptFriendRequestMutation();
+    // const {acceptRequest} = useAcceptFriendRequestMutation()
 
   const closeHandler = () => dispatch(setIsNotification(true));
 
   const friendRequestHandler = async ({ _id, accept }) => {
     dispatch(setIsNotification(false));
-    try {
-      const res = await acceptRequest({ requestId: _id, accept });
-      console.log("API Response:", res);
 
+      const res = await acceptRequest({ requestId: _id, accept }); 
+      console.log(res)
+      
       if (res.data?.success) {
-        toast.success(res.data?.message || "Request processed successfully!");
+        toast.success(res.data?.message || "Request accepted successfully!");
       } else {
         toast.error(res.data?.message || "Failed to process the request.");
       }
-    } catch (error) {
-      console.error("Error in friendRequestHandler:", error);
-      toast.error(error.message || "An error occurred while handling the request.");
-    }
-  };
-
-
+    
+  }; 
+  
   useErrors([{ error, isError }]);
 
   return (
@@ -85,7 +82,7 @@ const NotificationItem = memo(({ sender, _id, handler }) => {
         <Typography
           variant="body1"
           sx={{
-            flexGrow: 1,
+            flexGrow: 2,
             display: "-webkit-box",
             WebkitLineClamp: 1,
             WebkitBoxOrient: "vertical",
@@ -94,7 +91,7 @@ const NotificationItem = memo(({ sender, _id, handler }) => {
             width: "100%",
           }}
         >
-          {`${name} sent you a friend request.`}
+          {`${name}`}
         </Typography>
 
         <Stack
@@ -103,22 +100,23 @@ const NotificationItem = memo(({ sender, _id, handler }) => {
             sm: "row",
           }}
           spacing={1}
-        >
+        > 
           <Button
             variant="contained"
             color="primary"
             size="small"
-            onClick={() => handler({ _id, accept: true })}
+            onClick={() => handler({ _id,accept:true })}
           >
-            Accept
+          
+          Accept
           </Button>
           <Button
             variant="outlined"
             color="error"
             size="small"
-            onClick={() => handler({ _id, accept: false })}
-          >
-            Reject
+            onClick={() => handler({accept:true, _id})}
+          > 
+          Reject
           </Button>
         </Stack>
       </Stack>

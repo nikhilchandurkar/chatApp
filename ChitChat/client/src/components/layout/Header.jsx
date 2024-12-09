@@ -58,7 +58,7 @@ const Header = () => {
   return (
     <>
       <Box sx={{ flexGrow: 1 }} height="4rem">
-        <AppBar position="static">
+        <AppBar color={"secondary"} position="static" >
           <Toolbar >
             <Typography variant="h6" sx={{ display: { xs: "none", sm: "block" } }}>
               Chat App
@@ -69,9 +69,7 @@ const Header = () => {
                 <MenuIcon />
               </IconButton>
             </Box>
-
             <Box sx={{ flexGrow: 1 }} />
-
             <Box>
               <IconBtn title="Search" icon={<SearchIcon />} onClick={openSearch} />
               <IconBtn title="New Group" icon={<AddIcon />} onClick={addNewGroup} />
@@ -82,6 +80,7 @@ const Header = () => {
           </Toolbar>
         </AppBar>
       </Box>
+
 
       {isSearch && (
         <Suspense fallback={<Backdrop open><Typography>Loading...</Typography></Backdrop>}>

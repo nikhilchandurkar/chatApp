@@ -45,12 +45,11 @@ const api = createApi({
       query: (data) => ({
         url: "user/acceptrequest",
         method: "PUT",
-        credentials: "include", 
-        body: data, 
+        credentials: "include",
+        body: data,
       }),
-      invalidatesTags: ["Chat"], 
+      invalidatesTags: ["Chat"],
     }),
-    
 
     chatDetails: builder.query({
       query: ({ chatId, populate = false }) => {
