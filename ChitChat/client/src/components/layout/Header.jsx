@@ -43,7 +43,6 @@ const Header = () => {
 
   const logoutHandler = async () => {
     try {
-      console.log(server)
       const { data } = await axios.post(`${server}/api/v1/user/logout`, {},
         { withCredentials: true, });
       dispatch(userExists());
@@ -60,7 +59,7 @@ const Header = () => {
     <>
       <Box sx={{ flexGrow: 1 }} height="4rem">
         <AppBar position="static">
-          <Toolbar>
+          <Toolbar >
             <Typography variant="h6" sx={{ display: { xs: "none", sm: "block" } }}>
               Chat App
             </Typography>
