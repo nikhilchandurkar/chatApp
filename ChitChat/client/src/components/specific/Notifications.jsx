@@ -12,24 +12,24 @@ const Notifications = () => {
 
   const { isLoading, data, error, isError } = useGetNotificationsQuery();
   const [acceptRequest] = useAcceptFriendRequestMutation();
-    // const {acceptRequest} = useAcceptFriendRequestMutation()
+  // const {acceptRequest} = useAcceptFriendRequestMutation()
 
   const closeHandler = () => dispatch(setIsNotification(true));
 
   const friendRequestHandler = async ({ _id, accept }) => {
     dispatch(setIsNotification(false));
 
-      const res = await acceptRequest({ requestId: _id, accept }); 
-      console.log(res)
-      
-      if (res.data?.success) {
-        toast.success(res.data?.message || "Request accepted successfully!");
-      } else {
-        toast.error(res.data?.message || "Failed to process the request.");
-      }
-    
-  }; 
-  
+    const res = await acceptRequest({ requestId: _id, accept });
+    console.log(res)
+
+    if (res.data?.success) {
+      toast.success(res.data?.message || "Request accepted successfully!");
+    } else {
+      toast.error(res.data?.message || "Failed to process the request.");
+    }
+
+  };
+
   useErrors([{ error, isError }]);
 
   return (
@@ -100,23 +100,23 @@ const NotificationItem = memo(({ sender, _id, handler }) => {
             sm: "row",
           }}
           spacing={1}
-        > 
+        >
           <Button
             variant="contained"
             color="primary"
             size="small"
-            onClick={() => handler({ _id,accept:true })}
+            onClick={() => handler({ _id, accept: true })}
           >
-          
-          Accept
+
+            Accept
           </Button>
           <Button
             variant="outlined"
             color="error"
             size="small"
-            onClick={() => handler({accept:true, _id})}
-          > 
-          Reject
+            onClick={() => handler({ accept:false, _id })}
+          >
+            Reject
           </Button>
         </Stack>
       </Stack>

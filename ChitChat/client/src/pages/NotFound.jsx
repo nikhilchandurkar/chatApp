@@ -13,7 +13,7 @@ const NotFound = () => {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-        backgroundColor: '#f3f4f6',  // Light gray background for the whole page
+        backgroundColor: '#f3f4f6', 
       }}
     >
       <Box

@@ -241,13 +241,13 @@ const getMyAllFriends = tryCatch(async (req, res, next) => {
 
     const friends = chats.map(({ members }) => {
         const otherUser = getOtherMembers(members, req.user);
-        if (!otherUser) return null; // Skip if no other user found
+        if (!otherUser) return null; 
         return {
             _id: otherUser._id,
             name: otherUser.name,
             avatar: otherUser.avatar?.url || null
         };
-    }).filter(Boolean); // Remove any null entries from the array
+    }).filter(Boolean); 
 
     if (chatId) {
         const chat = await Chat.findById(chatId);
