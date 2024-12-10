@@ -1,20 +1,22 @@
-import React, { useState, useRef } from 'react'
-import AppLayout from '../components/layout/AppLayout'
-import { IconButton, Stack } from '@mui/material';
-import { graycolor, orange } from '../constants/color';
 import {
   AttachFile as AttachFileIcon,
   Send as SendIcon
 } from '@mui/icons-material';
+import { IconButton, Stack } from '@mui/material';
+import React, { useRef, useState } from 'react';
 import Filemenu from '../components/dialogs/Filemenu';
-import { sampleMessages } from '../constants/sampleData';
+import AppLayout from '../components/layout/AppLayout';
 import MessageComponent from '../components/shared/MessageComponent';
-import { getSocket } from '../socket';
+
+// import { sampleMessages } from '../constants/sampleData';
+
+import { orange } from '@mui/material/colors';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { sampleMessages } from '../constants/sampleData';
 
 const Chat = ({ chatId, user }) => {
-  const socket = getSocket()
+  // const socket =
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -45,7 +47,7 @@ const Chat = ({ chatId, user }) => {
         boxSizing={"border-box"}
         padding={"1rem"}
         spacing={"1rem"}
-        bgcolor={graycolor}
+        bgcolor={"rgba(247,247,247,1)"}
         height={"90%"}
         sx={{
           overflowX: "hidden",
@@ -93,7 +95,7 @@ const Chat = ({ chatId, user }) => {
               outline: "none",
               padding: "0 3rem",
               borderRadius: "1.5rem",
-              backgroundColor: graycolor,
+              backgroundColor: "rgba(247,247,247,1)",
             }}
           />
 

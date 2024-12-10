@@ -1,23 +1,31 @@
-import { Avatar, AvatarGroup, Box, Stack } from '@mui/material';
-import React from 'react';
-import { transformImage } from '../../lib/feature';
+import { Avatar, AvatarGroup, Box, Stack } from "@mui/material";
+import React from "react";
+import { transformImage } from "../../lib/feature";
 
+// Todo Transform
 const AvatarCard = ({ avatar = [], max = 4 }) => {
-  
   return (
     <Stack direction={"row"} spacing={0.5}>
-      <AvatarGroup max={max}>
-        <Box sx={{ width: "5rem", height: "3rem", position: "relative" }}>
+      <AvatarGroup
+        max={max}
+        sx={{
+          position: "relative",
+        }}
+      >
+        <Box width={"5rem"} height={"3rem"}>
           {avatar.map((i, index) => (
             <Avatar
-              key={i._id || index}  
+              key={Math.random() * 100}
               src={transformImage(i)}
               alt={`Avatar ${index}`}
               sx={{
-                width: "2rem",   
-                height: "2rem",
+                width: "3rem",
+                height: "3rem",
                 position: "absolute",
-                left: `${0.5 + index}rem`,
+                left: {
+                  xs: `${0.5 + index}rem`,
+                  sm: `${index}rem`,
+                },
               }}
             />
           ))}
@@ -25,6 +33,6 @@ const AvatarCard = ({ avatar = [], max = 4 }) => {
       </AvatarGroup>
     </Stack>
   );
-}
+};
 
 export default AvatarCard;

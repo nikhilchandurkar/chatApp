@@ -148,10 +148,15 @@ const sendFriendRequest = tryCatch(async (req, res, next) => {
         ],
     });
 
+
     // If a request already exists, throw an error
     if (request) {
         return next(new ErrorHandler("Request already sent", 400));
     }
+
+    if (!req.user || request.receiver._id.toString() !== req.user.toString())
+        return next(new ErrorHandler("Unauthorized", 401));
+    
 
     // Create a new friend request
     await Request.create({
@@ -171,17 +176,20 @@ const sendFriendRequest = tryCatch(async (req, res, next) => {
 const acceptFriendRequest = tryCatch(async (req, res, next) => {
     const { requestId, accept } = req.body;
 
+    // Find the friend request
     const request = await Request.findById(requestId)
         .populate("sender", "name")
         .populate("receiver", "name");
 
+    // Handle case where request is not found
     if (!request) return next(new ErrorHandler("Request not found", 404));
 
-    // Check if the user is authorized to accept the request
-    if (request.receiver._id.toString() !== req.user.toString())
-        return next(new ErrorHandler("Unauthorized", 401));
+    // Check if the authenticated user is the receiver of the request
+    // if (request.receiver._id.toString() !== req.user._id.toString()) {
+    //     return next(new ErrorHandler("Unauthorized", 401));
+    // }
 
-    // If request is rejected
+    // Handle request rejection
     if (!accept) {
         await request.deleteOne();
         return res.status(200).json({
@@ -190,25 +198,28 @@ const acceptFriendRequest = tryCatch(async (req, res, next) => {
         });
     }
 
-    // If request is accepted
+    // Handle request acceptance
     const members = [request.sender._id, request.receiver._id];
 
     await Promise.all([
         Chat.create({
             members,
-            name: `${request.sender.name} -- ${request.receiver.name}`
+            name: `${request.sender.name} -- ${request.receiver.name}`,
         }),
         request.deleteOne(),
     ]);
 
+    // Emit an event to refresh chats for the members
     emitEvent(req, REFETCH_CHATS, members);
 
+    // Respond with success message
     return res.status(200).json({
         success: true,
         message: "Friend request accepted",
         senderId: request.sender._id,
     });
 });
+
 
 
 const getNotifications = tryCatch(async (req, res, next) => {

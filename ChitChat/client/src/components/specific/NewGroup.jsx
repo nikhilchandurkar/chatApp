@@ -1,22 +1,46 @@
-import { Button, Dialog, DialogTitle, Stack, TextField, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { useInputValidation } from "6pp";
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  Skeleton,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { useState } from "react";
 import { sampleUsers } from "../../constants/sampleData";
-import UserItem from '../shared/UserItem';
-import { useInputValidation } from '6pp';
+import UserItem from "../shared/UserItem";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  useAvailableFriendsQuery,
+  useNewGroupMutation,
+} from "../../redux/api/api";
+import { useAsyncMutation, useErrors } from "../../hooks/hook";
+import { setIsNewGroup } from "../../redux/reducers/misc";
+import toast from "react-hot-toast";
 
 const NewGroup = () => {
-  // Input validation for group name
-  const groupName = useInputValidation("");
-  const [members, setMembers] = useState(sampleUsers);
-  const [selectMembers, setSelectedMembers] = useState([]);
+  const { isNewGroup } = useSelector((state) => state.misc);
+  const dispatch = useDispatch();
 
-  // Select member handler to toggle selection state
+  const { isError, isLoading, error, data } = useAvailableFriendsQuery();
+  const [newGroup, isLoadingNewGroup] = useAsyncMutation(useNewGroupMutation);
+
+  const groupName = useInputValidation("");
+
+  const [selectedMembers, setSelectedMembers] = useState([]);
+
+  const errors = [
+    {
+      isError,
+      error,
+    },
+  ];
+
+  useErrors(errors);
+
   const selectMemberHandler = (id) => {
-    setMembers((prev) =>
-      prev.map((user) =>
-        user._id === id ? { ...user, isAdded: !user.isAdded } : user
-      )
-    );
     setSelectedMembers((prev) =>
       prev.includes(id)
         ? prev.filter((currElement) => currElement !== id)
@@ -24,46 +48,56 @@ const NewGroup = () => {
     );
   };
 
-  // Form submit handler
   const submitHandler = () => {
-    // Handle group creation logic here
-    console.log("Group Name:", groupName.value);
-    console.log("Selected Members:", selectMembers);
+    if (!groupName.value) return toast.error("Group name is required");
+
+    if (selectedMembers.length < 2)
+      return toast.error("Please Select Atleast 3 Members");
+
+    newGroup("Creating New Group...", {
+      name: groupName.value,
+      members: selectedMembers,
+    });
+
+    closeHandler();
   };
 
-  // Close handler to close the dialog
   const closeHandler = () => {
-    // Reset the form and close the dialog
-    setSelectedMembers([]);
+    dispatch(setIsNewGroup(false));
   };
+
+  console.log("hello")
 
   return (
-    <Dialog open>
-      <Stack p={{ xs: "1rem", sm: "2rem" }} width={"25rem"} spacing={"2rem"}>
-        <DialogTitle align="center" variant="h4">New Group</DialogTitle>
+    <Dialog onClose={closeHandler} open={isNewGroup}>
+      <Stack p={{ xs: "1rem", sm: "3rem" }} width={"25rem"} spacing={"2rem"}>
+        <DialogTitle textAlign={"center"} variant="h4">
+          New Group
+        </DialogTitle>
 
-        {/* Group Name Input */}
         <TextField
           label="Group Name"
           value={groupName.value}
           onChange={groupName.changeHandler}
-          fullWidth
         />
 
-        {/* Members Selection */}
         <Typography variant="body1">Members</Typography>
+
         <Stack>
-          {members.map((user) => (
-            <UserItem
-              user={user}
-              key={user._id}  // Ensure key is unique and based on user._id
-              handler={selectMemberHandler}
-              isAdded={selectMembers.includes(user._id)}
-            />
-          ))}
+          {isLoading ? (
+            <Skeleton />
+          ) : (
+            data?.friends?.map((i) => (
+              <UserItem
+                user={i}
+                key={i._id}
+                handler={selectMemberHandler}
+                isAdded={selectedMembers.includes(i._id)}
+              />
+            ))
+          )}
         </Stack>
 
-        {/* Action Buttons */}
         <Stack direction={"row"} justifyContent={"space-evenly"}>
           <Button
             variant="text"
@@ -73,11 +107,11 @@ const NewGroup = () => {
           >
             Cancel
           </Button>
-
           <Button
             variant="contained"
             size="large"
             onClick={submitHandler}
+            disabled={isLoadingNewGroup}
           >
             Create
           </Button>

@@ -1,40 +1,31 @@
-import React from 'react';
-import { transformImage } from '../../lib/feature';
+import React from "react";
+import { transformImage } from "../../lib/feature";
 import { FileOpen as FileOpenIcon } from "@mui/icons-material";
 
-const RenderAttachment = ({ file, url, size = { width: "200px", height: "150px" } }) => {
-    const renderImage = (url) => {
-        try {
-            return <img
-                src={transformImage(url, 200)}
-                alt="Image attachment"
-                width={size.width}
-                height={size.height}
-                style={{
-                    objectFit: "contain",
-                }}
-            />;
-        } catch (error) {
-            console.error('Error transforming image:', error);
-            return <img src={url} alt="Image attachment" width={size.width} height={size.height} />;
-        }
-    };
+const RenderAttachment = (file, url) => {
+  switch (file) {
+    case "video":
+      return <video src={url} preload="none" width={"200px"} controls />;
 
-    switch (file) {
-        case "video":
-            return <video src={url} preload='none' width={size.width} controls />;
-        case "audio":
-            return <audio src={url} preload='none' controls />;
-        case "image":
-            return renderImage(url);
-        default:
-            return (
-                <div>
-                    <FileOpenIcon />
-                    <p>Unsupported file type</p>
-                </div>
-            );
-    }
+    case "image":
+      return (
+        <img
+          src={transformImage(url, 200)}
+          alt="Attachement"
+          width={"200px"}
+          height={"150px"}
+          style={{
+            objectFit: "contain",
+          }}
+        />
+      );
+
+    case "audio":
+      return <audio src={url} preload="none" controls />;
+
+    default:
+      return <FileOpenIcon />;
+  }
 };
 
 export default RenderAttachment;

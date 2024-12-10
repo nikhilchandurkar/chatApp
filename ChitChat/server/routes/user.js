@@ -43,8 +43,8 @@ app.put("/sendrequest",
     sendFriendRequest)
 
 app.put("/acceptrequest",
-    acceptFriendRequestValidator(),
-    validateHandler,
+    // acceptFriendRequestValidator(),
+    // validateHandler,
     acceptFriendRequest)
 
 app.get("/notifications", getNotifications);

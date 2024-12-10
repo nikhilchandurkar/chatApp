@@ -1,7 +1,6 @@
 import React from 'react'
 import { styled } from '@mui/system';
 import { Link as LinkComponent } from "react-router-dom";
-import { graycolor } from '../../constants/color';
 
 // Styled component for visually hidden input
 export const VisuallyHiddenInput = styled("input")({
@@ -34,6 +33,5 @@ export const InputBox = styled("input")`
   outline: none;
   padding: 0 3rem;
   border-radius: 1.5rem;
-  background-color: ${graycolor};
 `;
 

@@ -1,14 +1,14 @@
-import React, { memo } from 'react';
+import React, { memo } from "react";
 import { Link } from "../styles/StyledComponents";
-import { Stack, Box } from '@mui/system';
-import { Typography } from '@mui/material';
-import AvatarCard from './AvatarCard';
+import { Box, Stack, Typography } from "@mui/material";
+import AvatarCard from "./AvatarCard";
+// import { motion } from "framer-motion";
 
 const ChatItem = ({
   avatar = [],
   name,
   _id,
-  groupchat = false,
+  groupChat = false,
   sameSender,
   isOnline,
   newMessageAlert,
@@ -17,40 +17,35 @@ const ChatItem = ({
 }) => {
   return (
     <Link
-      sx={{ padding: "0" }}
+      sx={{
+        padding: "0",
+      }}
       to={`/chat/${_id}`}
-      onContextMenu={(e) => handleDeleteChat(e, _id, groupchat)}
-      aria-label={`Chat with ${name}`}
+      onContextMenu={(e) => handleDeleteChat(e, _id, groupChat)}
     >
       <div
+        initial={{ opacity: 0, y: "-100%" }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 * index }}
         style={{
           display: "flex",
-          padding: "1rem",
+          gap: "1rem",
           alignItems: "center",
-          backgroundColor: sameSender ? "#f0f0f0" : "unset",
-          color: sameSender ? "black" : "unset",
-          borderRadius: "5px",
+          backgroundColor: sameSender ? "black" : "unset",
+          color: sameSender ? "white" : "unset",
           position: "relative",
+          padding: "1rem",
         }}
-        role="listitem"  // added role for better accessibility
       >
-        {/* Avatar section */}
         <AvatarCard avatar={avatar} />
 
-        {/* Chat info */}
-        <Stack sx={{ p: "0" }}>
-          <Typography color="black">
-            {name}
-          </Typography>
-          
+        <Stack>
+          <Typography>{name}</Typography>
           {newMessageAlert && (
-            <Typography color="primary" fontWeight="bold">
-              {newMessageAlert.count} New Message{newMessageAlert.count > 1 ? 's' : ''}
-            </Typography>
+            <Typography>{newMessageAlert.count} New Message</Typography>
           )}
         </Stack>
 
-        {/* Online status indicator */}
         {isOnline && (
           <Box
             sx={{
@@ -63,8 +58,6 @@ const ChatItem = ({
               right: "1rem",
               transform: "translateY(-50%)",
             }}
-            aria-label="User is online"
-            role="status"
           />
         )}
       </div>

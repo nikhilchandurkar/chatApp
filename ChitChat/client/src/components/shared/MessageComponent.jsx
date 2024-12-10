@@ -1,61 +1,65 @@
-import { Box, Stack, Typography } from '@mui/material';
-import React, { memo } from 'react';
-import { lightblue } from '../../constants/color';
-import moment from 'moment';
-import { fileFormat } from '../../lib/feature';
-import RenderAttachment from './RenderAttachment';
+import { Box, Typography } from "@mui/material";
+import React, { memo } from "react";
+import { lightBlue } from "../../constants/color";
+import moment from "moment";
+import { fileFormat } from "../../lib/feature";
+import RenderAttachment from "./RenderAttachment";
+import { motion } from "framer-motion";
 
 const MessageComponent = ({ message, user }) => {
-    const { sender, content, attachments = [], createdAt } = message;
+  const { sender, content, attachments = [], createdAt } = message;
 
-    const sameSender = sender?._id === user?._id;
+  const sameSender = sender?._id === user?._id;
 
-    const timeAgo = moment(createdAt).fromNow();
-    console.log(attachments);
+  const timeAgo = moment(createdAt).fromNow();
 
-    return (
-        <div
-            style={{
-                alignSelf: sameSender ? "flex-end" : "flex-start",
-                backgroundColor: "white",
-                color: "black",
-                borderRadius: "10px",
-                width: "fit-content",
-                padding: "0.5rem", // Added padding for better appearance
-            }}
-        >
-            {/* Display sender name only if not the same sender */}
-            {!sameSender && (
-                <Typography color={lightblue} fontWeight={"600"} variant='caption'>
-                    {sender.name}
-                </Typography>
-            )}
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: "-100%" }}
+      whileInView={{ opacity: 1, x: 0 }}
+      style={{
+        alignSelf: sameSender ? "flex-end" : "flex-start",
+        backgroundColor: "white",
+        color: "black",
+        borderRadius: "5px",
+        padding: "0.5rem",
+        width: "fit-content",
+      }}
+    >
+      {!sameSender && (
+        <Typography color={lightBlue} fontWeight={"600"} variant="caption">
+          {sender.name}
+        </Typography>
+      )}
 
-            {/* Display message content */}
-            {content && (
-                <Typography variant='body1'>{content}</Typography>
-            )}
+      {content && <Typography>{content}</Typography>}
 
-            {/* Render attachments if any */}
-            {attachments.length > 0 && attachments.map((attachment, index) => {
-                const url = attachment.url;
-                const file = fileFormat(url); // Determine the file type based on the URL
-                return (
-                    <Box key={index}>
-                        <a href={url} target='_blank' rel="noopener noreferrer" download>
-                            {/* Pass props to RenderAttachment */}
-                            <RenderAttachment file={file} url={url} />
-                        </a>
-                    </Box>
-                );
-            })}
+      {attachments.length > 0 &&
+        attachments.map((attachment, index) => {
+          const url = attachment.url;
+          const file = fileFormat(url);
 
-            {/* Display time of message */}
-            <Typography fontSize={"small"} variant='caption' color={"text.secondary"}>
-                {timeAgo}
-            </Typography>
-        </div>
-    );
-}
+          return (
+            <Box key={index}>
+              <a
+                href={url}
+                target="_blank"
+                download
+                style={{
+                  color: "black",
+                }}
+              >
+                {RenderAttachment(file, url)}
+              </a>
+            </Box>
+          );
+        })}
+
+      <Typography variant="caption" color={"text.secondary"}>
+        {timeAgo}
+      </Typography>
+    </motion.div>
+  );
+};
 
 export default memo(MessageComponent);
