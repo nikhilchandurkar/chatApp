@@ -41,26 +41,31 @@ const socketAuthenticator = async (socket, next, err) => {
     try {
         if (err) {
             console.log(err);
-            // return next(new ErrorHandler("please login to acces this route", 401));
-            return  next (err);
+            return next(err);
         }
-        const authTocken = socket.request.cookies[chitChatTocken]
-        if (!authTocken) {
-            return next(new ErrorHandler("please login to acces this route", 401))
+        
+        // Typo in variable name: 'chitChatTocken' should be 'chitChatToken'
+        // Also, you're using 'token' in jwt.verify, but the variable is 'authTocken'
+        const authToken = socket.request.cookies[chitChatToken];
+        
+        if (!authToken) {
+            return next(new ErrorHandler("Please login to access this route", 401));
         }
-        const decodedData = jwt.verify(token, process.env.JWT_SECRET)
+        
+        const decodedData = jwt.verify(authToken, process.env.JWT_SECRET);
         const user = await User.findById(decodedData._id);
+        
         if (!user) {
-            return next(new ErrorHandler("please login to acces this route", 401))
+            return next(new ErrorHandler("Please login to access this route", 401));
         }
+        
         socket.user = user;
         return next();
 
     } catch (error) {
-        console.log(error)
-        return next(new ErrorHandler("please login to acces this route", 401));
+        console.log(error);
+        return next(new ErrorHandler("Please login to access this route", 401));
     }
-
 }
 
 export { adminOnly, isAuthenticated, socketAuthenticator };
