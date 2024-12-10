@@ -1,4 +1,4 @@
-import { useFileHandler, useInputValidation, useStrongPassword } from "6pp";
+import { useFileHandler, useInputValidation } from "6pp";
 import { CameraAlt as CameraAltIcon } from "@mui/icons-material";
 import {
   Avatar,
@@ -15,10 +15,9 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { VisuallyHiddenInput } from "../components/styles/StyledComponents.jsx";
-import { bgGradient } from "../constants/color.js";
 import { server } from "../constants/config.js";
 import { userExists } from "../redux/reducers/auth.js";
-import { usernamevalidator } from "../utils/validators.js"
+import { usernamevalidator } from "../utils/validators.js";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -108,7 +107,7 @@ const Login = () => {
   return (
     <div
       style={{
-        backgroundImage: bgGradient,
+        backgroundImage: "linear-gradient(rgb(234 200 95), rgb(110 57 225 / 84%))",
       }}
     >
       <Container

@@ -9,21 +9,22 @@ import { setIsMobile } from '../../redux/reducers/misc';
 import ChatList from '../specific/ChatList';
 import Profile from '../specific/Profile';
 import Header from './Header';
-
+import { getSocket } from '../../socket';
 
 
 
 const AppLayout = () => (WrappedComponent) => {
-
+  
   return (props) => {
-
+    
     const dispatch = useDispatch();
     const { chatId } = useParams();
     const { data, isLoading, isError, refetch, error } = useMyChatsQuery("")
+    const socket = getSocket();
     
 
     const { isMobile } = useSelector((state) => state.misc);
-    
+    console.log(socket);
 
     useErrors([{ isError,error }]);
 

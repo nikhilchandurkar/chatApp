@@ -8,13 +8,14 @@ import { Server } from "socket.io";
 import { v4 as uuid } from "uuid";
 import { NEW_MESSAGE } from "./constants/events.js";
 import { getSockets } from "./lib/helper.js";
+import { socketAuthenticator } from "./middlewares/auth.js";
 import { errorMiddleware } from "./middlewares/error.js";
 import { Message } from "./models/message.js";
 import adminRoute from "./routes/admin.js";
 import chatRoute from "./routes/chat.js";
 import userRoute from "./routes/user.js";
 import { connectDB } from "./utils/features.js";
-import { createFakeUser } from "./seeders/seeder.js";
+import { corsOption } from "./constants/config.js";
 
 
 dotenv.config({
@@ -26,10 +27,10 @@ const port = process.env.PORT || 3000;
 
 connectDB(MONGO_URI);
 
-cloudinary.config({ 
-    cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
-    api_key:process.env.CLOUDINARY_API_KEY,
-    api_secret:process.env.CLOUDINARY_API_SECRET,
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
 
 });
 
@@ -42,14 +43,7 @@ const io = new Server(server);
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-    origin: [
-        "http://localhost:5173",
-        "http://localhost:4173",
-        process.env.CLIENT_URL
-    ],
-    credentials: true,
-}));
+app.use(cors(corsOption));
 
 
 app.use("/api/v1/user", userRoute);
@@ -57,6 +51,14 @@ app.use("/api/v1/chat", chatRoute);
 app.use("/api/v1/admin", adminRoute);
 
 // createFakeUser(10);
+
+io.use((socket, next) => {
+    cookieParser()(
+        socket.request,
+        socket.request.res,
+        async (err) => await socketAuthenticator(err, socket, next)
+    )
+})
 
 
 io.on("connection", (socket) => {
