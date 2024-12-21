@@ -54,22 +54,20 @@ app.use("/api/v1/user", userRoute);
 app.use("/api/v1/chat", chatRoute);
 app.use("/api/v1/admin", adminRoute);
 
-// createFakeUser(10);
 
-// io.use((socket, next) => {
-//     cookieParser()(
-//         socket.request,
-//         socket.request.res,
-//         async (err) => await socketAuthenticator(err, socket, next)
-//     )
-// })
+
+io.use((socket, next) => {
+    cookieParser()(
+        socket.request,
+        socket.request.res,
+        async (err) => await socketAuthenticator(err, socket, next)
+    )
+})
 
 
 io.on("connection", (socket) => {
-    const user = {
-        _id: "nik",
-        name: "nikhil"
-    };
+    const user = socket.user;
+    console.log(user)
     userSocketIDs.set(user._id.toString(), socket.id);
     console.log("Connected users:", userSocketIDs);
 
