@@ -3,7 +3,6 @@ const fileFormat = (url = "") => {
     const cleanUrl = url.split(/[?#]/)[0];
     
     const fileExt = cleanUrl.split(".").pop().toLowerCase();
-    console.log(fileExt);
 
     if (!fileExt) {
         return "unknown";

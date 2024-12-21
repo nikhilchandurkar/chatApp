@@ -21,11 +21,9 @@ const AppLayout = () => (WrappedComponent) => {
     const { chatId } = useParams();
     const { data, isLoading, isError, refetch, error } = useMyChatsQuery("")
     const socket = getSocket();
-    
-
+    console.log(socket.id);
     const { isMobile } = useSelector((state) => state.misc);
-    console.log(socket);
-
+    const { user } = useSelector((state) => state.misc);
     useErrors([{ isError,error }]);
 
 
@@ -33,7 +31,7 @@ const AppLayout = () => (WrappedComponent) => {
       e.preventDefault();
       console.log("deleteChat", _id, groupChat);
     }
-
+    
     const handleMobileClose = () => dispatch(setIsMobile(false))
 
 

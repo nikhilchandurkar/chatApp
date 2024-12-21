@@ -39,7 +39,11 @@ const userSocketIDs = new Map();
 
 const app = express();
 const server = createServer(app);
-const io = new Server(server);
+const io = new Server(server,
+    {
+        cors:corsOption
+    }
+);
 
 app.use(express.json());
 app.use(cookieParser());
@@ -52,13 +56,13 @@ app.use("/api/v1/admin", adminRoute);
 
 // createFakeUser(10);
 
-io.use((socket, next) => {
-    cookieParser()(
-        socket.request,
-        socket.request.res,
-        async (err) => await socketAuthenticator(err, socket, next)
-    )
-})
+// io.use((socket, next) => {
+//     cookieParser()(
+//         socket.request,
+//         socket.request.res,
+//         async (err) => await socketAuthenticator(err, socket, next)
+//     )
+// })
 
 
 io.on("connection", (socket) => {

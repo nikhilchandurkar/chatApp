@@ -16,6 +16,8 @@ import { tryCatch } from "./error.js";
 //     next();
 // })
 
+
+
 const isAuthenticated = tryCatch((req, res, next) => {
     const token = req.cookies[chitChatTocken];
     if (!token) {
