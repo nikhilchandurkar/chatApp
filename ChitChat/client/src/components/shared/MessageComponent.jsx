@@ -5,13 +5,15 @@ import moment from "moment";
 import { fileFormat } from "../../lib/feature";
 import RenderAttachment from "./RenderAttachment";
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
 
-const MessageComponent = ({ message, user }) => {
+const MessageComponent = ({ message}) => {
+  const { user } = useSelector((state) => state.misc); 
   const { sender, content, attachments = [], createdAt } = message;
 
   const sameSender = sender?._id === user?._id;
-
-  const timeAgo = moment(createdAt).fromNow();
+console.log(sender?._id, user?._id)
+  const timeAgo = createdAt ? moment(createdAt).fromNow() : "Just now";
 
   return (
     <motion.div
@@ -26,25 +28,25 @@ const MessageComponent = ({ message, user }) => {
         width: "fit-content",
       }}
     >
-      {!sameSender && (
-        <Typography color={lightBlue} fontWeight={"600"} variant="caption">
+      {!sameSender && sender?.name && (
+        <Typography color={lightBlue} fontWeight="600" variant="caption">
           {sender.name}
         </Typography>
       )}
 
       {content && <Typography>{content}</Typography>}
 
-      {attachments.length > 0 &&
-        attachments.map((attachment, index) => {
+      {attachments?.length > 0 &&
+        attachments.map((attachment) => {
           const url = attachment.url;
           const file = fileFormat(url);
 
           return (
-            <Box key={index}>
+            <Box key={url}>
               <a
                 href={url}
                 target="_blank"
-                download
+                download={`attachment_${url}`}
                 style={{
                   color: "black",
                 }}
@@ -55,7 +57,7 @@ const MessageComponent = ({ message, user }) => {
           );
         })}
 
-      <Typography variant="caption" color={"text.secondary"}>
+      <Typography variant="caption" color="text.secondary">
         {timeAgo}
       </Typography>
     </motion.div>

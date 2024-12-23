@@ -47,9 +47,7 @@ const Header = () => {
         { withCredentials: true, });
       dispatch(userExists());
       toast.success(data.message);
-      console.log(data);
     } catch (error) {
-      console.log(error);
       toast.error(error?.response?.data?.message || "something went wrong");
     }
   };

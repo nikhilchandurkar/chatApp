@@ -132,6 +132,10 @@ const searchUser = tryCatch(async (req, res, next) => {
 // Send friend request
 const sendFriendRequest = tryCatch(async (req, res, next) => {
     const { userId } = req.body;
+    
+    if (req.user === userId) {
+        return next(new ErrorHandler("You cannot send a friend request to yourself", 400));
+    }
 
     const request = await Request.findOne({
         $or: [
@@ -139,6 +143,7 @@ const sendFriendRequest = tryCatch(async (req, res, next) => {
             { sender: userId, receiver: req.user },
         ],
     });
+    
 
     if (request) {
         return next(new ErrorHandler("Request already sent", 400));
@@ -178,7 +183,7 @@ const acceptFriendRequest = tryCatch(async (req, res, next) => {
         await Promise.all([
             Chat.create({
                 members,
-                name: `${request.sender.name} -- ${request.receiver.name}`,
+                name: `${request.sender.name} <--> ${request.receiver.name}`,
             }),
             request.deleteOne(),
         ]);

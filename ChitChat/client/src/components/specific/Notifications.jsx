@@ -20,7 +20,6 @@ const Notifications = () => {
     dispatch(setIsNotification(false));
 
     const res = await acceptRequest({ requestId: _id, accept });
-    console.log(res)
 
     if (res.data?.success) {
       toast.success(res.data?.message || "Request accepted successfully!");
@@ -46,7 +45,7 @@ const Notifications = () => {
                 <NotificationItem
                   sender={sender}
                   _id={_id}
-                  // name={sender.name}
+                  name={sender.name}
                   handler={friendRequestHandler}
                   key={_id}
                 />

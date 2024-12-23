@@ -39,7 +39,6 @@ const useAsyncMutation = (mutatationHook) => {
           });
         }
       } catch (error) {
-        console.log(error);
         toast.error("Something went wrong", { id: toastId });
       } finally {
         setIsLoading(false);
@@ -48,6 +47,20 @@ const useAsyncMutation = (mutatationHook) => {
   
     return [executeMutation, isLoading, data];
   };
+
+  const useSocketEvents = (socket, handlers) => {
+    useEffect(() => {
+      Object.entries(handlers).forEach(([event, handler]) => {
+        socket.on(event, handler);
+      });
+  
+      return () => {
+        Object.entries(handlers).forEach(([event, handler]) => {
+          socket.off(event, handler);
+        });
+      };
+    }, [socket, handlers]);
+  };
   
 
-export { useErrors,useAsyncMutation } 
+export { useErrors,useAsyncMutation,useSocketEvents } 

@@ -67,10 +67,9 @@ io.use((socket, next) => {
 
 io.on("connection", (socket) => {
     const user = socket.user;
-    console.log(user)
+
     userSocketIDs.set(user._id.toString(), socket.id);
     console.log("Connected users:", userSocketIDs);
-
     socket.on(NEW_MESSAGE, async ({ chatId, members, message }) => {
         const messageForRealTime = {
             content: message,
@@ -88,6 +87,7 @@ io.on("connection", (socket) => {
             sender: user._id,
             chat: chatId,
         };
+        console.log("emmitng",messageForRealTime)
         const membersSocket = getSockets(members, userSocketIDs);
         io.to(membersSocket).emit(NEW_MESSAGE, {
             chatId,
