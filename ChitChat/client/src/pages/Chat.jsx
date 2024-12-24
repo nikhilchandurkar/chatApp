@@ -139,17 +139,18 @@ const eventArr = {[NEW_MESSAGE] : newMessagesHandler}
             />
 
             <IconButton type='submit'
-              sx={{
-                backgroundColor: orange,
-                color: "white",
-                marginLeft: "1rem",
-                padding: "0.5rem",
-                "&:hover": {
-                  bgcolor: "error.dark"
-                }
-              }}
+             sx={{
+              rotate: "-30deg",
+              bgcolor: orange,
+              color: "white",
+              marginLeft: "1rem",
+              padding: "0.5rem",
+              "&:hover": {
+                bgcolor: "error.dark",
+              },
+            }}
             >
-              <SendIcon />
+              <SendIcon  />
             </IconButton>
           </Stack>
         </form>
