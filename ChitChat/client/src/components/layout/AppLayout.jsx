@@ -15,6 +15,7 @@ import Header from './Header';
 
 const AppLayout = () => (WrappedComponent) => {
   
+  
   return (props) => {
     const params = useParams();
     const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const AppLayout = () => (WrappedComponent) => {
     const { data, isLoading, isError, refetch, error } = useMyChatsQuery("")
     
     const socket = getSocket();
-    const { user } = useSelector((state) => state.misc);
+    const { user } = useSelector((state) => state.auth);
     const { isMobile } = useSelector((state) => state.misc);
     
     
@@ -39,8 +40,6 @@ const AppLayout = () => (WrappedComponent) => {
     return (
       <>
         <Header />
-
-
         {isLoading ? (
           <Skeleton />
         ) : (
@@ -51,9 +50,9 @@ const AppLayout = () => (WrappedComponent) => {
               w="70vw"
               chats={data?.chats}
               chatId={chatId}
-              handleDeleteChat={handleDeleteChat}
-              newMessagesAlert={newMessagesAlert}
-              onlineUsers={onlineUsers}
+              // handleDeleteChat={handleDeleteChats}
+              // newMessagesAlert={newMessagesAlert}
+              // onlineUsers={onlineUsers}
             />
           </Drawer>
         )}
@@ -75,7 +74,7 @@ const AppLayout = () => (WrappedComponent) => {
                   handleDeleteChat={handleDeleteChats}
                   chats={data?.chats || sampleChats}
                   chatId={chatId}
-                  
+                  user={user}
                   onlineUsers={["0", "1", "2", "3"]}
                 />
               )
@@ -104,7 +103,9 @@ const AppLayout = () => (WrappedComponent) => {
               bgcolor: "rgba(0,0,0,1)",
             }}
           >
-            <Profile user={[user]} />
+            <Profile 
+            // user={user} 
+            />
           </Grid>
         </Grid>
       </>

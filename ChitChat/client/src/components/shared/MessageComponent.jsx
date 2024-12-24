@@ -8,11 +8,10 @@ import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 
 const MessageComponent = ({ message}) => {
-  const { user } = useSelector((state) => state.misc); 
+  const { user } = useSelector((state) => state.auth); 
   const { sender, content, attachments = [], createdAt } = message;
 
   const sameSender = sender?._id === user?._id;
-console.log(sender?._id, user?._id)
   const timeAgo = createdAt ? moment(createdAt).fromNow() : "Just now";
 
   return (

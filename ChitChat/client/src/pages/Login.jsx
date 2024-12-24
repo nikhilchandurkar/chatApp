@@ -1,4 +1,4 @@
-import { useFileHandler, useInputValidation } from "6pp";
+import { useFileHandler, useInputValidation, useStrongPassword } from "6pp";
 import { CameraAlt as CameraAltIcon } from "@mui/icons-material";
 import {
   Avatar,
@@ -28,8 +28,9 @@ const Login = () => {
   const name = useInputValidation("");
   const bio = useInputValidation("");
   const username = useInputValidation("", usernamevalidator);
-  const password = useInputValidation("");
+  const password = useInputValidation("",useStrongPassword);
   const avatar = useFileHandler("single");
+  
 
   const handleLogin = async (e) => {
     e.preventDefault();

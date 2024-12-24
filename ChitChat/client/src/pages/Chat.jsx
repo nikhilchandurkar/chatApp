@@ -13,33 +13,38 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { NEW_MESSAGE } from '../constants/events';
 import { useSocketEvents } from '../hooks/hook';
-import { useChatDetailsQuery } from '../redux/api/api';
+import { useChatDetailsQuery, useGetMessagesQuery } from '../redux/api/api';
 import { getSocket } from '../socket';
+import { useInfiniteScrollTop } from '6pp';
 
 
-const Chat = ({ chatId }) => {
+const Chat = ({ chatId,user }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const socket = getSocket();
 
 
-  const {user} = useSelector((state)=>state.misc)
-
+  // const {user} = useSelector((state)=>state.misc)
   const containerRef = useRef(null);
   const bottomRef = useRef(null);
 
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-
-
   const [page, setPage] = useState(1);
   const [fileMenuAnchor, setFileMenuAnchor] = useState(null);
-
+  
   const chatDetails = useChatDetailsQuery({ chatId, skip: !chatId })
+  const oldMessageChunk = useGetMessagesQuery({chatId,})
+
+  const { data: oldMessages, setData: setOldMessages } = useInfiniteScrollTop(
+    containerRef,
+    oldMessageChunk.data?.totalPages,
+    page,
+    setPage,
+    oldMessageChunk.data?.messages
+  );
 
   const members = chatDetails?.data?.chat?.members
-  console.log(messages)
-
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -49,15 +54,22 @@ const Chat = ({ chatId }) => {
   };
 
   const newMessagesHandler = useCallback((data) => {
-    console.log(data)
     setMessages((prev) => [...prev, data.message]);
   }, []);
 
 
+  const errors = [
+    { isError: chatDetails.isError, error: chatDetails.error },
+    { isError: oldMessageChunk.isError, error: oldMessageChunk.error },
+  ];
+
+  
 
 const eventArr = {[NEW_MESSAGE] : newMessagesHandler}
     const eventHandlers = {[NEW_MESSAGE]: newMessagesHandler };
     useSocketEvents(socket, eventArr)
+
+    const allMessages = [...oldMessages, ...messages];
 
   return chatDetails.isLoading ? <Skeleton /> :
     (
@@ -74,7 +86,7 @@ const eventArr = {[NEW_MESSAGE] : newMessagesHandler}
             overflowY: "auto",
           }}
         >
-          {messages.map((value) => (
+          {allMessages.map((value) => (
             <MessageComponent
               key={value._id}
               message={value}
