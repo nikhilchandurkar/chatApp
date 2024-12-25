@@ -1,13 +1,12 @@
 {
-    "name": "chitChat",
-    "version": "1.0.0",
-    "scripts": {
-      "start": "node server/app.js ",
-      "build": "cd client && npm install && npm run build",
-      "install": "cd server && npm install && cd ../cd client && npm install"
-    },
-    "engines": {
-      "node": ">=14"
-    }
+  "name": "chitChat",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server/app.js",
+    "build": "cd client && yarn install && yarn build",
+    "install": "cd server && yarn install && cd ../client && yarn install"
+  },
+  "engines": {
+    "node": ">=14"
   }
-  
+}
