@@ -4,7 +4,7 @@ import {
 } from '@mui/icons-material';
 import { IconButton, Skeleton, Stack } from '@mui/material';
 import React, { useCallback, useRef, useState } from 'react';
-import Filemenu from '../components/dialogs/Filemenu';
+// import Filemenu from '../components/dialogs/Filemenu';
 import AppLayout from '../components/layout/AppLayout';
 import MessageComponent from '../components/shared/MessageComponent';
 
@@ -31,7 +31,7 @@ const Chat = ({ chatId,user }) => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [page, setPage] = useState(1);
-  const [fileMenuAnchor, setFileMenuAnchor] = useState(null);
+  // const [fileMenuAnchor, setFileMenuAnchor] = useState(null);
   
   const chatDetails = useChatDetailsQuery({ chatId, skip: !chatId })
   const oldMessageChunk = useGetMessagesQuery({chatId,})
@@ -155,7 +155,7 @@ const eventArr = {[NEW_MESSAGE] : newMessagesHandler}
           </Stack>
         </form>
 
-        <Filemenu />
+        {/* <Filemenu /> */}
       </>
     );
 };
