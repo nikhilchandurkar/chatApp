@@ -1,0 +1,13 @@
+{
+    "name": "chitChat",
+    "version": "1.0.0",
+    "scripts": {
+      "start": "node server/app.js ",
+      "build": "cd client && npm install && npm run build",
+      "install": "cd server && npm install && cd ../cd client && npm install"
+    },
+    "engines": {
+      "node": ">=14"
+    }
+  }
+  
