@@ -59,11 +59,16 @@ app.use(cors(corsOption));
 //     res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 // });
 
+app.get("/", (req,res)=>{
+    res.json("hello its chatAPI")
+});
 
 
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/chat", chatRoute);
 app.use("/api/v1/admin", adminRoute);
+
+
 
 
 
