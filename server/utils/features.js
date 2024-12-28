@@ -11,8 +11,6 @@ const cookieOption = {
     // sameSite:"true",
     httpOnly: true,
     secure: true,
-    //change in production
-    // secure: process.env.secureCookieOption
 
 }
 
