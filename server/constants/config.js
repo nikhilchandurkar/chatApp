@@ -7,6 +7,7 @@ const corsOption = {
         process.env.CLIENT_URL,
         process.env.NODE_ENV === 'production' 
     ],
+    methodz:["POST", "GET", "PUT", "DELETE", "UPDATE"],
     credentials: true,
 }
 
