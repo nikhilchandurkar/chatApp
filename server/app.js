@@ -16,7 +16,6 @@ import chatRoute from "./routes/chat.js";
 import userRoute from "./routes/user.js";
 import { connectDB } from "./utils/features.js";
 import { corsOption } from "./constants/config.js";
-import path from "path";
 
 
 
