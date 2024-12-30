@@ -24,7 +24,7 @@ dotenv.config({
 });
 
 const MONGO_URI = process.env.MONGO_URI;
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 connectDB(MONGO_URI);
 
