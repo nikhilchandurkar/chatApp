@@ -51,6 +51,7 @@ app.use(cookieParser());
 app.use(cors(corsOption));
 
 
+
 app.get("/", (req,res)=>{
     res.json("hello its chatAPI")
 });
@@ -122,7 +123,6 @@ app.use(errorMiddleware);
 server.listen(port, () => {
     console.log(`Server is running at port ${port} in ${process.env.NODE_ENV}`);
 });
-export default app
 
-export  {userSocketIDs};
 
+export  {app, userSocketIDs}
