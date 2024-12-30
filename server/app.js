@@ -129,6 +129,7 @@ app.use(errorMiddleware);
 server.listen(port, () => {
     console.log(`Server is running at port ${port} in ${process.env.NODE_ENV}`);
 });
+export default app
 
-export { app, userSocketIDs };
+export  {userSocketIDs};
 
