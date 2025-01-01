@@ -9,10 +9,15 @@ const corsOption = {
         process.env.CLIENT_URL,
         process.env.NODE_ENV === 'production' 
     ],
-    methodz:["POST", "GET", ],
+    methods:["GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE",
+              "OPTIONS" ],
     credentials: true,
 }
 
 const chitChatTocken="chitChat-Token"
 
-export{corsOption,chitChatTocken }
+export { chitChatTocken, corsOption }
