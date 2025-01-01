@@ -11,6 +11,12 @@
         "src": "/(.*)",
         "dest": "app.js"
       }
-    ]
+    ],
+    "rewrites": [
+        { "source": "/favicon.ico", "destination": "/public/favicon.ico" }
+      ]
+    
+
+    
   }
   
