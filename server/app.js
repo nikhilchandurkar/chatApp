@@ -29,7 +29,7 @@ const port = process.env.PORT || 3000;
 
 // Database connection
 try {
-    connectDB(MONGO_URI);
+    connectDB(MONGO_URI);  
 } catch (error) {
     console.error("Database connection failed:", error);
     process.exit(1); // Exit process if DB connection fails
