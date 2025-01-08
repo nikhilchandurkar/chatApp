@@ -10,7 +10,7 @@ import {
 } from "../utils/features.js";
 import {
     ALERT,
-    NEW_ATTACHMENT,
+    NEW_ATTACHMENT, 
     REFETCH_CHATS
 } from "../constants/events.js";
 
