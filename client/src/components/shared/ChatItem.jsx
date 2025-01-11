@@ -7,6 +7,7 @@ import AvatarCard from "./AvatarCard";
 const ChatItem = ({
   avatar = [],
   name,
+  
   _id,
   groupChat = false,
   sameSender,

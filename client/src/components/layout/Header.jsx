@@ -71,7 +71,7 @@ const Header = () => {
             <Box>
               <IconBtn title="Search" icon={<SearchIcon />} onClick={openSearch} />
               <IconBtn title="New Group" icon={<AddIcon />} onClick={addNewGroup} />
-              <IconBtn title="Manage Groups" icon={<GroupIcon />} onClick={navigateToGroup} />
+              {/* <IconBtn title="Manage Groups" icon={<GroupIcon />} onClick={navigateToGroup} /> */}
               <IconBtn title="Notifications" icon={<NotificationsIcon />} onClick={openNotification} />
               <IconBtn title="Logout" icon={<LogoutIcon />} onClick={logoutHandler} />
             </Box>

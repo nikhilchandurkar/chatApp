@@ -66,8 +66,6 @@ const NewGroup = () => {
     dispatch(setIsNewGroup(false));
   };
 
-  console.log("hello")
-
   return (
     <Dialog onClose={closeHandler} open={isNewGroup}>
       <Stack p={{ xs: "1rem", sm: "3rem" }} width={"25rem"} spacing={"2rem"}>
