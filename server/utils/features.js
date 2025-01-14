@@ -40,8 +40,6 @@ const sendToken = (res, user, code, message) => {
 
 }
 
-// Ensure this is installed via npm
-
 const uploadFilesToCloudinary = async (files = []) => {
     if (!files || files.length === 0) {
         throw new Error("No files provided for upload.");

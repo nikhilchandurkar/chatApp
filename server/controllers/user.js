@@ -81,11 +81,12 @@ const login = tryCatch(async (req, res, next) => {
 });
 
 // Get user profile
-const getMyProfile = tryCatch(async (req, res, next) => {
+const  getMyProfile = tryCatch(async (req, res, next) => {
     const user = await User.findById(req.user).select("-password");
     if (!user) {
         return next(new ErrorHandler("User not found", 404));
     }
+    console.log(user)
     sendResponse(res, true, "User profile fetched", { user });
 });
 
