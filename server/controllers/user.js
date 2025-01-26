@@ -168,7 +168,7 @@ const acceptFriendRequest = tryCatch(async (req, res, next) => {
 
     try {
         await Promise.all([
-            Chat.create({ members, name: `${request.sender.name} <--> ${request.receiver.name}` }),
+            Chat.create({ members, name: `${request.sender.name} <===> ${request.receiver.name}` }),
             request.deleteOne(),
         ]);
         emitEvent(req, REFETCH_CHATS, members);
